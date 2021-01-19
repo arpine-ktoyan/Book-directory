@@ -24,7 +24,7 @@ router.get('/api/books/:id', (req, res) => {
     Book.findById({_id:req.params.id})
     .then(book => {
         if(!book){
-            res.json(`There is no book with id: ${req.params._id}`)
+            res.json(`There is no book with id: ${req.params.id}`)
         }
         res.status(200).json(book);
     })
@@ -35,7 +35,7 @@ router.get('/api/books/:id', (req, res) => {
 });
 
 router.post('/api/books', (req, res) => {
-    if(!req.body.title && !req.body.author){
+    if(!req.body.title || !req.body.author){
         return res.status(400).send('A book should has a title and an author');
     }
 
@@ -47,7 +47,6 @@ router.post('/api/books', (req, res) => {
     newBook.save()
     .then(book => {
         res.status(201).json(book);
-
     })
     .catch(err => {
         res.status(500).json('Failed to save a book');
@@ -55,31 +54,25 @@ router.post('/api/books', (req, res) => {
 });
 
 router.put('/api/books/:id', (req, res) => {
-    const book = books.find(elem => {
-        return elem.id === parseInt(req.params.id);
-    });
+    if(!req.body.title || !req.body.author){
+        return res.status(400).json('Book should has a title and an author');
+    }
 
-    if (book) {
-        const updatedBook = {
-            id: parseInt(req.params.id),
+    const updatedBook = {
             title: req.body.title,
             author: req.body.author
-        };
-        const targetIndex = books.indexOf(book);
-        books.splice(targetIndex, 1, updatedBook);
+    };
 
-        const updatedBooks = JSON.stringify(books);
-
-        fs.writeFileSync('books.json', updatedBooks, (err) => {
-            if (err) {
-                console.log('Erooooooooooooor ', err);
-            }
-        })
-
-        res.sendStatus(204);
-    } else {
-        res.sendStatus(404);
-    }
+    Book.findByIdAndUpdate({_id: req.params.id}, updatedBook, {new: true})
+    .then(book => {
+        if(!book){
+           return res.json(`There is no book with id: ${req.params.id}`);
+        }
+        res.status(204).send('Succesfully updated.');
+    })
+    .catch(err => {
+        res.status(500).send(`Failed to update the book. Error: ${err}`);
+    });
 });
 
 router.delete('/api/books/:id', (req, res) => {
