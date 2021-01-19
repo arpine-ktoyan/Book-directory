@@ -1,16 +1,23 @@
 const express = require('express');
-const fs = require('fs');
 const router = express.Router();
+const Book = require('../models/Books');
 
-let jsonData = fs.readFileSync('books.json');
-let books = JSON.parse(jsonData);
 
 router.get('/', (req, res) => {
     res.redirect('/api/books');
 });
 
 router.get('/api/books', (req, res) => {
-    res.json(books);
+    Book.find()
+    .then(books => {
+        if(!books){
+            res.send('There are no books');
+        }
+        res.json(books);
+    })
+    .catch(err => {
+        res.status(500).json(`Error: ${err}`);
+    })
 });
 
 router.get('/api/books/:id', (req, res) => {
