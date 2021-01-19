@@ -21,29 +21,32 @@ router.get('/api/books', (req, res) => {
 });
 
 router.get('/api/books/:id', (req, res) => {
-    let book = books.find((elem) => {
-        return elem.id === parseInt(req.params.id);
-    });
-    if (book) {
+    Book.findById({_id:req.params.id})
+    .then(book => {
+        if(!book){
+            res.json(`There is no book with id: ${req.params._id}`)
+        }
         res.status(200).json(book);
-    } else {
-        res.status(404).send('There is no such ID!');
-    }
+    })
+    .catch(err => {
+        res.status(404).send(`Faild to find the book. Error: ${err}`);
+
+    });
 });
 
 router.post('/api/books', (req, res) => {
-    let bookIds = books.map(item => item.id);
+    const bookIds = books.map(item => item.id);
 
-    let newBookId = bookIds.length > 0 ? bookIds.length + 1 : 1;
+    const newBookId = bookIds.length > 0 ? bookIds.length + 1 : 1;
 
-    let newBook = {
+    const newBook = {
         id: newBookId,
         title: req.body.title,
         author: req.body.author
     }
     books.push(newBook);
 
-    let updatedBooks = JSON.stringify(books);
+    const updatedBooks = JSON.stringify(books);
 
     fs.writeFileSync('books.json', updatedBooks, (err) => {
         if (err) {
@@ -55,20 +58,20 @@ router.post('/api/books', (req, res) => {
 });
 
 router.put('/api/books/:id', (req, res) => {
-    let book = books.find(elem => {
+    const book = books.find(elem => {
         return elem.id === parseInt(req.params.id);
     });
 
     if (book) {
-        let updatedBook = {
+        const updatedBook = {
             id: parseInt(req.params.id),
             title: req.body.title,
             author: req.body.author
         };
-        let targetIndex = books.indexOf(book);
+        const targetIndex = books.indexOf(book);
         books.splice(targetIndex, 1, updatedBook);
 
-        let updatedBooks = JSON.stringify(books);
+        const updatedBooks = JSON.stringify(books);
 
         fs.writeFileSync('books.json', updatedBooks, (err) => {
             if (err) {
@@ -83,14 +86,14 @@ router.put('/api/books/:id', (req, res) => {
 });
 
 router.delete('/api/books/:id', (req, res) => {
-    let book = books.find(item => {
+    const book = books.find(item => {
         return item.id === parseInt(req.params.id);
     });
     if (book) {
-        let targetIndex = books.indexOf(book);
+        const targetIndex = books.indexOf(book);
         books.splice(targetIndex, 1);
     }
-    let updatedBooks = JSON.stringify(books);
+    const updatedBooks = JSON.stringify(books);
 
     fs.writeFileSync('books.json', updatedBooks, (err) => {
         if (err) {
