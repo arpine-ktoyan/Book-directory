@@ -68,7 +68,7 @@ router.put('/api/books/:id', (req, res) => {
         if(!book){
            return res.json(`There is no book with id: ${req.params.id}`);
         }
-        res.status(204).send('Succesfully updated.');
+        res.json('Succesfully updated.');
     })
     .catch(err => {
         res.status(500).send(`Failed to update the book. Error: ${err}`);
@@ -76,22 +76,17 @@ router.put('/api/books/:id', (req, res) => {
 });
 
 router.delete('/api/books/:id', (req, res) => {
-    const book = books.find(item => {
-        return item.id === parseInt(req.params.id);
-    });
-    if (book) {
-        const targetIndex = books.indexOf(book);
-        books.splice(targetIndex, 1);
-    }
-    const updatedBooks = JSON.stringify(books);
-
-    fs.writeFileSync('books.json', updatedBooks, (err) => {
-        if (err) {
-            console.log('Erooooooooooooor ', err);
+    Book.findByIdAndRemove({_id:req.params.id})
+    .then(book => {
+        if(!book){
+            return res.json(`There is no book with id: ${req.params.id}`);
         }
+        res.json('The book is deleted');
     })
+    .catch(err => {
+        res.status(500).send(`Failed to delete the book. Error: ${err}`);
 
-    res.sendStatus(204);
+    });
 });
 
 
