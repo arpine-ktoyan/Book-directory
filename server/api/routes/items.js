@@ -29,32 +29,29 @@ router.get('/api/books/:id', (req, res) => {
         res.status(200).json(book);
     })
     .catch(err => {
-        res.status(404).send(`Faild to find the book. Error: ${err}`);
+        res.status(404).send(`Failed to find the book. Error: ${err}`);
 
     });
 });
 
 router.post('/api/books', (req, res) => {
-    const bookIds = books.map(item => item.id);
+    if(!req.body.title && !req.body.author){
+        return res.status(400).send('A book should has a title and an author');
+    }
 
-    const newBookId = bookIds.length > 0 ? bookIds.length + 1 : 1;
-
-    const newBook = {
-        id: newBookId,
+    const newBook = new Book({
         title: req.body.title,
         author: req.body.author
-    }
-    books.push(newBook);
-
-    const updatedBooks = JSON.stringify(books);
-
-    fs.writeFileSync('books.json', updatedBooks, (err) => {
-        if (err) {
-            console.log('Erooooooooooooor ', err);
-        }
     });
 
-    res.status(201).json(newBook);
+    newBook.save()
+    .then(book => {
+        res.status(201).json(book);
+
+    })
+    .catch(err => {
+        res.status(500).json('Failed to save a book');
+    });
 });
 
 router.put('/api/books/:id', (req, res) => {
