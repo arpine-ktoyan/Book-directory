@@ -1,7 +1,7 @@
 <div class="list row">
   <div class="col-md-8">
     <div class="input-group mb-3">
-      <input type="number" class="form-control" min="1" placeholder="Search by ID" [(ngModel)]="idOfBook" />
+      <input type="text" class="form-control" min="1" placeholder="Search by ID" [(ngModel)]="idOfBook" />
       <div class="input-group-append">
         <button class="btn btn-outline-secondary" type="button" (click)="searchId(idOfBook)">
           Search
@@ -17,7 +17,8 @@
     <ul class="list-group">
       <li class="list-group-item" *ngFor="let book of books; let i = index" [class.active]="i == currentIndex"
         (click)="setActiveBook(book, i)">
-        {{book.id}}. {{ book.title }}
+        <p><strong>{{ book.title }}</strong></p>
+        <p>ID: {{book._id}}</p>
       </li>
     </ul>
 
@@ -33,7 +34,7 @@
         {{ currentBook.author }}
       </div>
 
-      <a class="badge badge-warning" routerLink="/books/{{currentBook.id}}">
+      <a class="badge badge-warning" routerLink="/books/{{currentBook._id}}">
         Edit
       </a>
     </div>

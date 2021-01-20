@@ -33,7 +33,7 @@ export class FindBookComponent implements OnInit {
   }
 
   editBook(): any {
-    this.service.updateBook(this.currentBook.id, this.currentBook).subscribe(response => {
+    this.service.updateBook(this.currentBook._id, this.currentBook).subscribe(response => {
       console.log(response);
       this.message = 'The book was updated';
     },
@@ -44,7 +44,7 @@ export class FindBookComponent implements OnInit {
 
 
   deleteBook(): any {
-    this.service.deleteBook(this.currentBook.id)
+    this.service.deleteBook(this.currentBook._id)
       .subscribe();
     this.message = 'The book was deleted';
   }
