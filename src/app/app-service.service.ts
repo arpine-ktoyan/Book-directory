@@ -33,5 +33,4 @@ export class AppServiceService {
   deleteBook(id: any): any {
     return this.http.delete(`/api/books/${id}`);
   }
-
 }

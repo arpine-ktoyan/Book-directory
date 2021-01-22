@@ -8,6 +8,7 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
   templateUrl: './add-book.component.html',
   styleUrls: ['./add-book.component.css']
 })
+
 export class AddBookComponent implements OnInit {
   book: {
     title: '',
@@ -28,7 +29,6 @@ export class AddBookComponent implements OnInit {
 
   saveBook(): void {
     this.book = this.myForm.value;
-
     this.service.addBook(this.book)
       .subscribe(response => {
         this.submitted = true;
