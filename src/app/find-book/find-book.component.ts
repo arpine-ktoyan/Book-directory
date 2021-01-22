@@ -33,19 +33,22 @@ export class FindBookComponent implements OnInit {
   }
 
   editBook(): any {
-    this.service.updateBook(this.currentBook._id, this.currentBook).subscribe(response => {
-      console.log(response);
-      this.message = 'The book was updated';
-    },
-      error => {
-        console.log(error);
-      });
+    this.service.updateBook(this.currentBook._id, this.currentBook)
+      .subscribe(response => {
+        this.currentBook = null;
+        this.message = 'The book was updated';
+      },
+        error => {
+          console.log(error);
+        });
   }
 
 
   deleteBook(): any {
     this.service.deleteBook(this.currentBook._id)
-      .subscribe();
-    this.message = 'The book was deleted';
+      .subscribe(() => {
+        this.currentBook = null;
+        this.message = 'The book was deleted';
+      });
   }
 }

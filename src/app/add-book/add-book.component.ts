@@ -29,11 +29,8 @@ export class AddBookComponent implements OnInit {
   saveBook(): void {
     this.book = this.myForm.value;
 
-    console.log(this.book.title);
-
     this.service.addBook(this.book)
       .subscribe(response => {
-        console.log(response);
         this.submitted = true;
       },
         error => {

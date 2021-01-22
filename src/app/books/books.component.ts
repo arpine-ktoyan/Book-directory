@@ -13,11 +13,12 @@ export class BooksComponent implements OnInit {
   currentIndex = -1;
   message = '';
   idOfBook: any;
-  visibleAll = false;
+  visibleAll = true;
 
   constructor(private service: AppServiceService) { }
 
   ngOnInit(): void {
+    this.showAllBooks();
   }
 
   getAllBooksFromApi(): any {

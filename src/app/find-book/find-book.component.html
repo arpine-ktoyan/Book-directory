@@ -24,6 +24,9 @@
 
     <div *ngIf="!currentBook">
         <br />
-        <p>Cannot access this Library...</p>
+        <div *ngIf="!message">
+            <p>Cannot access this Library...</p>
+        </div>
+        <p>{{ message }}</p>
     </div>
 </div>
