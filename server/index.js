@@ -1,8 +1,18 @@
 const express = require('express');
 const cors = require('cors');
+const mongoose = require('mongoose');
 
-const itemsRouter = require('./routes/items');
+const itemsRouter = require('./api/routes/items');
+const dbURI = '';
 
+mongoose.connect(dbURI, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true
+}).then(() => {
+    console.log("Successfully connected to the database");
+}).catch(err => {
+    console.log('Could not connect to the database. Exiting now...', err);
+});
 
 const app = express();
 app.use(express.json());
