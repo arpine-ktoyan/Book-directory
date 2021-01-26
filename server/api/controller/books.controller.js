@@ -23,7 +23,6 @@ exports.getBookById = (req, res) => {
         })
         .catch(err => {
             res.status(500).json(`Failed to find the book. Error: ${err}`);
-
         });
 }
 
@@ -56,7 +55,7 @@ exports.updateBook = (req, res) => {
         author: req.body.author
     };
 
-    Book.findByIdAndUpdate({ _id: req.params.id }, updatedBook, { new: true })
+    Book.updateOne({ _id: req.params.id }, updatedBook, { new: true })
         .then(book => {
             if (!book) {
                 return res.json(`There is no book with id: ${req.params.id}`);
@@ -69,7 +68,7 @@ exports.updateBook = (req, res) => {
 }
 
 exports.deleteBook = (req, res) => {
-    Book.findByIdAndRemove({ _id: req.params.id })
+    Book.deleteOne({ _id: req.params.id })
         .then(book => {
             if (!book) {
                 return res.status(404).json(`There is no book with id: ${req.params.id}`);
@@ -78,6 +77,5 @@ exports.deleteBook = (req, res) => {
         })
         .catch(err => {
             res.status(500).json(`Failed to delete the book. Error: ${err}`);
-
         });
 }

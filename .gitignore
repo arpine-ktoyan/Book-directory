@@ -11,6 +11,8 @@
 /node_modules
 package-lock.json
 
+.env
+
 # profiling files
 chrome-profiler-events*.json
 speed-measure-plugin*.json

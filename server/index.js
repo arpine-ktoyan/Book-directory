@@ -1,9 +1,11 @@
+require("dotenv").config();
+
 const express = require('express');
 const cors = require('cors');
 const mongoose = require('mongoose');
 
 const itemsRouter = require('./api/routes/items');
-const dbURI = '';
+const dbURI = process.env.DB_URI;
 
 mongoose.connect(dbURI, {
     useNewUrlParser: true,
